@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(name = "PRODUCT-REPOSITORY")
+@FeignClient(name = "product-repository")
 public interface ProductRepository {
     @RequestMapping(value= "/products", method = RequestMethod.GET)
     public List<Product> getAllProducts();
