@@ -18,7 +18,7 @@ import java.util.List;
 public class CalculationController {
     ServiceLayer serviceLayer;
 
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
     public void queryForTotalPriceAndTax(@PathVariable int productId) {
