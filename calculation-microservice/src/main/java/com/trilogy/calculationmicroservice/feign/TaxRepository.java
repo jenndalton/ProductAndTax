@@ -15,6 +15,6 @@ public interface TaxRepository {
     public List<Tax> getAllTaxes();
 
     @RequestMapping(value="/taxes/{category}", method = RequestMethod.GET)
-    public Tax getTaxesByCategory(@PathVariable int id);
+    public Tax getTaxesByCategory(@PathVariable String category);
 
 }
