@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(name = "TAX-REPOSITORY")
+@FeignClient(name = "tax-repository")
 public interface TaxRepository {
     @RequestMapping(value= "/taxes", method = RequestMethod.GET)
     public List<Tax> getAllTaxes();
 
-    @RequestMapping(value="/taxes/{id}", method = RequestMethod.GET)
-    public Tax getTaxesById(@PathVariable int id);
+    @RequestMapping(value="/taxes/{category}", method = RequestMethod.GET)
+    public Tax getTaxesByCategory(@PathVariable int id);
 
 }
