@@ -10,9 +10,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
 public class CalculationController {
     ServiceLayer serviceLayer;
 
@@ -23,14 +25,18 @@ public class CalculationController {
         serviceLayer.getTotalProductPriceWithTax(productId);
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public Product queryForProduct(@PathVariable int productId) {
-        return productRepository.getProductById(productId);
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+    public Product queryForProduct(@PathVariable int id) {
+        return productRepository.getProductById(id);
     }
 
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public List<Product> getAllProducts() {
-        return productRepository.getAllProducts();
+        try {
+            return productRepository.getAllProducts();
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 }
