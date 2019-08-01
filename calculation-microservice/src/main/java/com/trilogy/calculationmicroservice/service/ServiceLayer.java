@@ -1,11 +1,23 @@
 package com.trilogy.calculationmicroservice.service;
 
 
+import com.trilogy.calculationmicroservice.feign.ProductRepository;
+import com.trilogy.calculationmicroservice.feign.TaxRepository;
 import com.trilogy.calculationmicroservice.model.ProductView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceLayer {
+    @Autowired
+    TaxRepository taxRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    boolean taxExempt;
+
     public Double calculateTotalPrice(ProductView productView){
         Double totalPrice = 0.00;
         if (!taxExempt){
@@ -33,11 +45,4 @@ public class ServiceLayer {
 
         return null;
     }
-    /*
-            List<ServiceInstance> instances = discoveryClient.getInstances(taxRepositoryName);
-        String magicEightBallAnswerUri = serviceProtocol + instances.get(0).getHost() + ":" + instances.get(0).getPort() + servicePath;
-        String eightBallAnswer = restTemplate.getForObject(magicEightBallAnswerUri, String.class);
-        return eightBallAnswer;
-     */
-
 }
