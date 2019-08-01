@@ -1,0 +1,12 @@
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1001', 'Apple', 1.50, 'produce');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1002', 'Orenge', 0.95, 'produce');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1003', 'Onion', 1.00, 'produce');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1004', 'Kale', 1.50, 'produce');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1012', 'Note Book', 3.50, 'supply');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1011', 'pen 12/pk', 3.95, 'supply');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1021', 'Vitamin E 120cap', 14.85, 'supplement');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1022', 'Vitamin B12 1000mg', 21.95, 'supplement');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1031', 'Dove soap', 3.45, 'toiletry');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('1032', 'Dove shampoo', 5.95, 'toiletry');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('2013', 'Calculator', 21.47, 'electronic');
+INSERT INTO product (product_Id, product_Description, price_Per_Unit, category)  values ('2001', 'Radio clock', 39.56, 'electronic');
