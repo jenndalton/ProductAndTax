@@ -1,6 +1,7 @@
 package com.trilogy.calculationmicroservice.feign;
 
 import com.trilogy.calculationmicroservice.model.Product;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -12,5 +13,5 @@ public interface ProductRepository {
     public List<Product> getAllProducts();
 
     @RequestMapping(value="/product/{id}", method = RequestMethod.GET)
-    public Product getProductById();
+    public Product getProductById(@PathVariable int id);
 }

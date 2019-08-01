@@ -3,9 +3,10 @@ package com.trilogy.calculationmicroservice.service;
 
 import com.trilogy.calculationmicroservice.feign.ProductRepository;
 import com.trilogy.calculationmicroservice.feign.TaxRepository;
+import com.trilogy.calculationmicroservice.model.Product;
 import com.trilogy.calculationmicroservice.model.ProductView;
+import com.trilogy.calculationmicroservice.model.Tax;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,20 @@ public class ServiceLayer {
 
     @Autowired
     ProductRepository productRepository;
+
+    public ProductView getTotalProductPriceWithTax(int productId){
+        ProductView productView = new ProductView();
+
+        Product product = productRepository.getProductById(productId);
+        Tax tax = taxRepository.getTaxesById(productId);
+
+        return productView;
+    }
+
+    public ProductView getTotalProductPriceTaxExempt(ProductView productView){
+        return productView;
+    }
+
 
     boolean taxExempt;
 
