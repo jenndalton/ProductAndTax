@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceLayer {
-    @Autowired
     TaxRepository taxRepository;
 
-    @Autowired
     ProductRepository productRepository;
 
     public ProductView getTotalProductPriceWithTax(int productId){

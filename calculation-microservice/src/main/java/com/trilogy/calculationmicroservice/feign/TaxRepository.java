@@ -15,4 +15,5 @@ public interface TaxRepository {
 
     @RequestMapping(value="/taxes/{id}", method = RequestMethod.GET)
     public Tax getTaxesById(@PathVariable int id);
+
 }
