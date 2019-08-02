@@ -62,7 +62,7 @@ public class ControllerException {
      * @return Httpstatus code of 422
      */
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<VndErrors> outOfRangeException(IllegalArgumentException e, WebRequest request) {
         VndErrors error = new VndErrors(request.toString(), e.getMessage());
         ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
