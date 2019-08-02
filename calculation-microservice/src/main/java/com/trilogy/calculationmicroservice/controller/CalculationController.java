@@ -1,49 +1,52 @@
 package com.trilogy.calculationmicroservice.controller;
 
-import com.netflix.discovery.converters.Auto;
-import com.trilogy.calculationmicroservice.feign.ProductRepository;
-import com.trilogy.calculationmicroservice.feign.TaxRepository;
-import com.trilogy.calculationmicroservice.model.Product;
-import com.trilogy.calculationmicroservice.model.Tax;
-import com.trilogy.calculationmicroservice.service.ServiceLayer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Set;
+import com.trilogy.calculationmicroservice.exception.NotFoundException;
+
+
+import com.trilogy.calculationmicroservice.model.ProductView;
+
+import com.trilogy.calculationmicroservice.service.ServiceLayer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class CalculationController {
 
+    @Autowired
     ServiceLayer serviceLayer;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private TaxRepository taxRepository;
-
+ /*   public CalculationController(ServiceLayer serviceLayer){
+        this.serviceLayer=serviceLayer;
+    }*/
 
 
     @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
-    public void queryForTotalPriceAndTax(@PathVariable int productId) {
-        //serviceLayer.(productId);
-    }
+    @ResponseStatus(HttpStatus.OK)
+    public ProductView getTotalPriceAndTax(@PathVariable("productId") String productId,
+                                           @RequestParam(value = "quantity", defaultValue = "1") Integer quantity,
+                                           @RequestParam(value="taxExempt", required = false) Boolean taxExempt) {
+        ProductView productView = new ProductView();
+    /*    if(productId==null ||productId.isEmpty() || productId.equals(" "))
+        {
+            throw new IllegalArgumentException("Product Id cannot cannot be empty or null");
+        }
+        if(quantity==null ||quantity.toString().isEmpty() || quantity==0)
+        {
+            throw new IllegalArgumentException("Quantity cannot be zero or null");
+        }*/
+        productView.setProductId(productId);
+        productView.setQuantity(quantity);
+        productView = serviceLayer.getTotalProductPrice(productView, taxExempt);
+        if(productView == null){
+            throw new NotFoundException("Product details could not be retrieved for "+ productId);
+        }
+        return productView;
 
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public Product queryForProduct(@PathVariable int id) {
-       // return productRepository.getProductById(id);
-        return null;
-    }
-
-
-    @RequestMapping(value = "/taxes/{category}", method = RequestMethod.GET)
-    public Tax queryForTax(@PathVariable String category) {
-        return taxRepository.getTaxesByCategory(category);
     }
 
 }
