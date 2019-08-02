@@ -21,11 +21,12 @@ public class CalculationController {
     ServiceLayer serviceLayer;
 
 
-    @RequestMapping(value = "/api/price/product/{productId}", params = { "quantity", "taxExempt" }, method = RequestMethod.GET)
+    @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
+
     @ResponseStatus(HttpStatus.OK)
     public ProductView getTotalPriceAndTax(@PathVariable("productId") String productId,
-                                           @RequestParam(value = "quantity", defaultValue = "1") Integer quantity,
-                                           @RequestParam(value="taxExempt", required = false) Boolean taxExempt) {
+                                           @RequestParam(value = "quantity", required =false) int quantity,
+                                           @RequestParam(required =false) boolean taxExempt) {
         ProductView productView = new ProductView();
     /*    if(productId==null ||productId.isEmpty() || productId.equals(" "))
         {
