@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Set;
 
 @FeignClient(name = "product-repository")
 public interface ProductRepository {
     @RequestMapping(value= "/products", method = RequestMethod.GET)
     public List<Product> getAllProducts();
 
-    @RequestMapping(value="/product/{id}", method = RequestMethod.GET)
-    public Product getProductById(@PathVariable int id);
+    @RequestMapping(value="/products/{productId}", method = RequestMethod.GET)
+    public Product getProductById(@PathVariable int productId);
 }

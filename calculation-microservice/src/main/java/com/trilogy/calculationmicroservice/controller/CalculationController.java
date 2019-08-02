@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class CalculationController {
     ServiceLayer serviceLayer;
 
+    @Autowired
     private ProductRepository productRepository;
+
+
 
     @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
     public void queryForTotalPriceAndTax(@PathVariable int productId) {

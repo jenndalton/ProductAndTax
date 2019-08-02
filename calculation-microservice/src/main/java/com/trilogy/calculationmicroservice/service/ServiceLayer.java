@@ -19,7 +19,7 @@ public class ServiceLayer {
         ProductView productView = new ProductView();
 
         Product product = productRepository.getProductById(productId);
-        Tax tax = taxRepository.getTaxesById(productId);
+        Tax tax = taxRepository.getTaxesByCategory(product.getCategory());
 
         return productView;
     }
