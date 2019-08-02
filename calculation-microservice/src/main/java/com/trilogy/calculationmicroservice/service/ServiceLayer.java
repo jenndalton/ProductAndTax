@@ -24,6 +24,8 @@ public class ServiceLayer {
         return productView;
     }
 
+
+
     public ProductView getTotalProductPriceTaxExempt(ProductView productView){
         return productView;
     }
