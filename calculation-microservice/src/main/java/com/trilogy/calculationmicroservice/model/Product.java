@@ -45,10 +45,10 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(productId, product.productId) &&
-                Objects.equals(productDescription, product.productDescription) &&
-                Objects.equals(pricePerUnit, product.pricePerUnit) &&
-                Objects.equals(category, product.category);
+        return productId.equals(product.productId) &&
+                productDescription.equals(product.productDescription) &&
+                pricePerUnit.equals(product.pricePerUnit) &&
+                category.equals(product.category);
     }
 
     @Override
