@@ -13,5 +13,5 @@ import java.util.Set;
 public interface ProductRepository {
 
     @RequestMapping(value="/products/{productId}", method = RequestMethod.GET)
-    public Product getProductById(@PathVariable int productId);
+    public Product getProductById(@PathVariable String productId);
 }
