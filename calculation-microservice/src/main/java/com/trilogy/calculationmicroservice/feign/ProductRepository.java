@@ -11,8 +11,6 @@ import java.util.Set;
 
 @FeignClient(name = "product-repository")
 public interface ProductRepository {
-    @RequestMapping(value= "/products", method = RequestMethod.GET)
-    public List<Product> getAllProducts();
 
     @RequestMapping(value="/products/{productId}", method = RequestMethod.GET)
     public Product getProductById(@PathVariable int productId);

@@ -4,6 +4,7 @@ import com.netflix.discovery.converters.Auto;
 import com.trilogy.calculationmicroservice.feign.ProductRepository;
 import com.trilogy.calculationmicroservice.feign.TaxRepository;
 import com.trilogy.calculationmicroservice.model.Product;
+import com.trilogy.calculationmicroservice.model.Tax;
 import com.trilogy.calculationmicroservice.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -17,10 +18,14 @@ import java.util.Set;
 
 @RestController
 public class CalculationController {
+
     ServiceLayer serviceLayer;
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private TaxRepository taxRepository;
 
 
 
@@ -35,12 +40,9 @@ public class CalculationController {
     }
 
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public List<Product> getAllProducts() {
-        try {
-            return productRepository.getAllProducts();
-        } catch (NullPointerException e){
-            return null;
-        }
+    @RequestMapping(value = "/taxes/{category}", method = RequestMethod.GET)
+    public Tax queryForTax(@PathVariable String category) {
+        return taxRepository.getTaxesByCategory(category);
     }
+    
 }
