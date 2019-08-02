@@ -34,9 +34,9 @@ public class IntegrationTest {
 
 @Before
 public void setUp(){
-
+    restTemplate = new RestTemplate();
 }
-@Autowired
+
 RestTemplate restTemplate;
 
 
