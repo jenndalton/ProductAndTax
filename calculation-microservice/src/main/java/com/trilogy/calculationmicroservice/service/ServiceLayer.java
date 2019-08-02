@@ -18,6 +18,7 @@ public class ServiceLayer {
     @Autowired
     ProductRepository productRepository;
 
+
    public ServiceLayer(ProductRepository productRepository, TaxRepository taxRepository){
        this.productRepository = productRepository;
        this.taxRepository = taxRepository;
