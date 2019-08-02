@@ -46,9 +46,12 @@ public class ServiceLayer {
     public ProductView getTotalProductPrice(ProductView productView,boolean isTaxExempt){
         //get the category from productId
         Product product = getCategoryFromProductRepository(productView.getProductId());
+
         //get the tax rate based on category from client
         Tax tax = getTaxPercentageFromTaxRepository(product.getCategory());
         isTaxExempt = tax.getTaxExempt();
+
+
         ProductView productViewToSend = new ProductView();
         productViewToSend.setProductId(productView.getProductId());
         productViewToSend.setDescription(product.getProductDescription());

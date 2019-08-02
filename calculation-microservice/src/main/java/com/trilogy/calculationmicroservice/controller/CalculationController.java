@@ -42,6 +42,7 @@ public class CalculationController {
         productView.setProductId(productId);
         productView.setQuantity(quantity);
         productView = serviceLayer.getTotalProductPrice(productView, taxExempt);
+
         if(productView == null){
             throw new NotFoundException("Product details could not be retrieved for "+ productId);
         }

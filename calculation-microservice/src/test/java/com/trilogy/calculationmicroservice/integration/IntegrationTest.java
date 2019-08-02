@@ -32,12 +32,12 @@ public class IntegrationTest {
     TaxRepository taxRepository;
 
 
-@Before
-public void setUp(){
-    restTemplate = new RestTemplate();
-}
+    @Before
+    public void setUp(){
+        restTemplate = new RestTemplate();
+    }
 
-RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
 
     @Test
