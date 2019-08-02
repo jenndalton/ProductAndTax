@@ -18,21 +18,7 @@ public class ServiceLayer {
     @Autowired
     ProductRepository productRepository;
 
-   /* public ProductView getTotalProductPriceWithTax(int productId){
-        ProductView productView = new ProductView();
 
-       // Product product = productRepository.getProductById(productId);
-        Tax tax = taxRepository.getTaxesByCategory(product.getCategory());
-
-        return productView;
-    }
-
-
-
-    public ProductView getTotalProductPriceTaxExempt(ProductView productView){
-        return productView;
-    }
-*/
    public ServiceLayer(ProductRepository productRepository, TaxRepository taxRepository){
        this.productRepository = productRepository;
        this.taxRepository = taxRepository;
@@ -47,14 +33,13 @@ public class ServiceLayer {
             totalPrice = (productView.getPricePerUnit() * productView.getQuantity());
         }
 
-        return totalPrice;
+        return (double)Math.round(totalPrice * 100)/100;
     }
 
 
     public Double calculateTax(ProductView productView){
         Double totalTax = ((productView.getTaxPercent() / 100) * (productView.getPricePerUnit() * productView.getQuantity()));
-        Double d = (double)Math.round(totalTax);;
-        return d;
+        return (double)Math.round(totalTax* 100)/100;
     }
 
     public ProductView getTotalProductPrice(ProductView productView,boolean isTaxExempt){
@@ -67,9 +52,10 @@ public class ServiceLayer {
         productViewToSend.setProductId(productView.getProductId());
         productViewToSend.setDescription(product.getProductDescription());
         productViewToSend.setQuantity(productView.getQuantity());
+        productViewToSend.setPricePerUnit(product.getPricePerUnit());
         productViewToSend.setTaxPercent(tax.getTaxPercent());
-        productViewToSend.setTotalTax(calculateTax(productView));
-        productViewToSend.setTotal(calculateTotalPrice(productView,isTaxExempt));
+        productViewToSend.setTotalTax(calculateTax(productViewToSend));
+        productViewToSend.setTotal(calculateTotalPrice(productViewToSend,isTaxExempt));
         return productViewToSend;
     }
 

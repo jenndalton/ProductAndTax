@@ -45,10 +45,10 @@ public class Tax {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tax tax = (Tax) o;
-        return Objects.equals(categoryId, tax.categoryId) &&
-                Objects.equals(category, tax.category) &&
-                Objects.equals(taxPercent, tax.taxPercent) &&
-                Objects.equals(taxExempt, tax.taxExempt);
+        return categoryId.equals(tax.categoryId) &&
+                category.equals(tax.category) &&
+                taxPercent.equals(tax.taxPercent) &&
+                taxExempt.equals(tax.taxExempt);
     }
 
     @Override
