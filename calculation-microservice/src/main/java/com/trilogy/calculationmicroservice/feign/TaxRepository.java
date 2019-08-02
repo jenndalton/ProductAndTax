@@ -11,8 +11,6 @@ import java.util.List;
 
 @FeignClient(name = "tax-repository")
 public interface TaxRepository {
-    @RequestMapping(value= "/taxes", method = RequestMethod.GET)
-    public List<Tax> getAllTaxes();
 
     @RequestMapping(value="/taxes/{category}", method = RequestMethod.GET)
     public Tax getTaxesByCategory(@PathVariable String category);

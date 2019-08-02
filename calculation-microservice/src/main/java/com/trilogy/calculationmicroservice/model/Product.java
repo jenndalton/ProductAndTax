@@ -1,5 +1,7 @@
 package com.trilogy.calculationmicroservice.model;
 
+import java.util.Objects;
+
 public class Product {
     private String productId;
     private String productDescription;
@@ -36,5 +38,21 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(productId, product.productId) &&
+                Objects.equals(productDescription, product.productDescription) &&
+                Objects.equals(pricePerUnit, product.pricePerUnit) &&
+                Objects.equals(category, product.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, productDescription, pricePerUnit, category);
     }
 }
