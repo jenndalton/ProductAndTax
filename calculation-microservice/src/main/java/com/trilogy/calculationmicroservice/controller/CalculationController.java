@@ -44,5 +44,5 @@ public class CalculationController {
     public Tax queryForTax(@PathVariable String category) {
         return taxRepository.getTaxesByCategory(category);
     }
-    
+
 }
