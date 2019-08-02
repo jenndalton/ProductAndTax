@@ -3,80 +3,101 @@ package com.trilogy.calculationmicroservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trilogy.calculationmicroservice.feign.ProductRepository;
 import com.trilogy.calculationmicroservice.feign.TaxRepository;
+import com.trilogy.calculationmicroservice.model.Product;
 import com.trilogy.calculationmicroservice.model.ProductView;
+import com.trilogy.calculationmicroservice.model.Tax;
 import com.trilogy.calculationmicroservice.service.ServiceLayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CalculationController.class)
+@ImportAutoConfiguration(RefreshAutoConfiguration.class)
 public class CalculationControllerTest {
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockBean
-    private ServiceLayer serviceLayer;
+    ServiceLayer serviceLayer;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    @MockBean
+    ProductRepository productRepository;
 
+    @MockBean
+    TaxRepository taxRepository;
 
+  //  ProductView productView;
+  //  ProductView productViewExpected;
 
     @Before
     public void setUp(){
+      //  serviceLayer = new ServiceLayer(productRepository,taxRepository);
+
+       // mockMvc= new MockMvc(serviceLayer)
     }
 
     @Test
-    public void getRsvpThatDoesNotExistReturns404() throws Exception {
+    public void getTotalPriceAndTax() throws Exception{
         ProductView productView = new ProductView();
-        productView.setProductId("100");
+        productView.setProductId("1031");
+        productView.setQuantity(1);
+
+        ProductView  productViewExpected = new ProductView();
+        productViewExpected.setDescription("Dove soap");
+        productViewExpected.setProductId("1031");
+        productViewExpected.setQuantity(1);
+        productViewExpected.setPricePerUnit(539.95);
+        productViewExpected.setTaxPercent(8.25);
+        productViewExpected.setTotalTax(44.55);
+        productViewExpected.setTotal(584.50);
+
+        Product product = new Product();
+        product.setProductId("1031");
+        product.setCategory("toiletry");
+        product.setPricePerUnit(3.45);
+        product.setProductDescription("Dove soap");
+
+        Tax tax = new Tax();
+        tax.setCategory("toiletry");
+        tax.setTaxPercent(8.25);
+        tax.setTaxExempt(false);
+
+        when(serviceLayer.getTotalProductPrice(productView,true)).thenReturn(productViewExpected);
+        //when(productRepository.getProductById("1031")).thenReturn(product);
+        //when(taxRepository.getTaxesByCategory("toiletry")).thenReturn(tax);
 
 
-
-        when(serviceLayer.getTotalProductPrice(productView, false)).thenReturn(null);
-        this.mockMvc.perform(get("/api/price/product/" + productView.getProductId())).andDo(print()).
-                andExpect(status().isNotFound())
-                .andExpect(content().string(containsString("There is no Product View with id " + productView.getProductId())));
+        this.mockMvc.perform(get("/api/price/product/1031?quantity=1&taxExempt=true"))
+              // .param("quantity","1")
+              // .param("taxExempt","false")
+                 .andExpect(status().isOk())
+                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                 .andExpect(content().json(asJsonString(productViewExpected)))
+                 .andExpect(jsonPath("$.description", is("Dove soap")));
     }
 
-
-    @Test // for a get by id
-    public void getRsvpByIdShouldReturnRsvpWithIdJson() throws Exception {
-        //Arrange/assemble the expected output
-        ProductView productView = new ProductView();
-        productView.setProductId("100");
-        productView.setDescription("Flat screen TV 55");
-        productView.setQuantity(1);
-        productView.setProductId("539.93");
-        productView.setTaxPercent(8.25);
-        productView.setTotal(584.49);
-
-        //Get the expected JSON output
-        String outputJson = mapper.writeValueAsString(productView);
-
-        //Set up your mock response!
-        when(serviceLayer.getTotalProductPrice(productView, false )).thenReturn(productView);
-
-        this.mockMvc.perform(
-                get
-                        ("/api/price/product/{productId}?quantity={1}&exemptTax=false"))
-                .andDo(print()).andExpect(status()
-                .isOk())
-                .andExpect(content().json(outputJson));
-
+    public final static String asJsonString(final Object obj){
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        }
+        catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 
 }

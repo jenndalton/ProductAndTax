@@ -64,6 +64,7 @@ public class ServiceLayerTest {
         productViewExpected.setTaxPercent(8.25);
         productViewExpected.setTotalTax(44.55);
         productViewExpected.setTotal(584.50);
+        productViewExpected.setCategory("electonic");
 
        ProductView productViewFromService = productService.getTotalProductPrice(productView,false);
        assertEquals(productViewExpected, productViewFromService);
