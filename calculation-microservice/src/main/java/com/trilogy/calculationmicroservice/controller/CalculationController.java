@@ -20,10 +20,6 @@ public class CalculationController {
     @Autowired
     ServiceLayer serviceLayer;
 
- /*   public CalculationController(ServiceLayer serviceLayer){
-        this.serviceLayer=serviceLayer;
-    }*/
-
 
     @RequestMapping(value = "/api/price/product/{productId}", params = { "quantity", "taxExempt" }, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

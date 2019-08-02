@@ -10,7 +10,7 @@ public class ProductView {
     private Double taxPercent;
     private Double totalTax;
     private Double total;
-    private  String category;
+    private String category;
 
     public String getCategory() {
         return category;
