@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -41,14 +40,23 @@ public class CalculationControllerTest {
     @MockBean
     TaxRepository taxRepository;
 
-  //  ProductView productView;
-  //  ProductView productViewExpected;
 
     @Before
     public void setUp(){
       //  serviceLayer = new ServiceLayer(productRepository,taxRepository);
-
        // mockMvc= new MockMvc(serviceLayer)
+    }
+
+
+
+
+    @Test
+    public void getProductThatDoesNotExistReturns404() throws Exception {
+        ProductView productView = new ProductView();
+        productView.setProductId("102345");
+        when(serviceLayer.getTotalProductPrice(productView, false)).thenReturn(null);
+        this.mockMvc.perform(get("/api/price/product/102345?quantity=1&taxExempt=true")).
+                andExpect(status().isNotFound());
     }
 
     @Test
