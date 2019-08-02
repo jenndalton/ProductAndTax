@@ -37,16 +37,6 @@ public class CalculationControllerTest {
 
     @Before
     public void setUp(){
-        ProductView productView = new ProductView();
-        productView.setProductId("100");
-        productView.setDescription("Flat screen TV 55");
-        productView.setQuantity(1);
-        productView.setProductId("539.93");
-        productView.setTaxPercent(8.25);
-        productView.setTotal(584.49);
-
-
-
     }
 
     @Test
@@ -56,7 +46,7 @@ public class CalculationControllerTest {
 
 
 
-        when(serviceLayer.getTotalProductPrice(productView)).thenReturn(null);
+        when(serviceLayer.getTotalProductPrice(productView, false)).thenReturn(null);
         this.mockMvc.perform(get("/api/price/product/" + productView.getProductId())).andDo(print()).
                 andExpect(status().isNotFound())
                 .andExpect(content().string(containsString("There is no Product View with id " + productView.getProductId())));
