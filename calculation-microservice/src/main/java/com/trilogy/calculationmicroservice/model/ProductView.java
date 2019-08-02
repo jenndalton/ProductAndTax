@@ -10,6 +10,15 @@ public class ProductView {
     private Double taxPercent;
     private Double totalTax;
     private Double total;
+    private  String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getProductId() {
         return productId;
@@ -78,11 +87,12 @@ public class ProductView {
                 Objects.equals(pricePerUnit, that.pricePerUnit) &&
                 Objects.equals(taxPercent, that.taxPercent) &&
                 Objects.equals(totalTax, that.totalTax) &&
-                Objects.equals(total, that.total);
+                Objects.equals(total, that.total) &&
+                Objects.equals(category, that.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, description, quantity, pricePerUnit, taxPercent, totalTax, total);
+        return Objects.hash(productId, description, quantity, pricePerUnit, taxPercent, totalTax, total, category);
     }
 }

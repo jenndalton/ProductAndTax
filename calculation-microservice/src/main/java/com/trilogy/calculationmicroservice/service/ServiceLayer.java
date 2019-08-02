@@ -1,6 +1,7 @@
 package com.trilogy.calculationmicroservice.service;
 
 
+import com.trilogy.calculationmicroservice.exception.NotFoundException;
 import com.trilogy.calculationmicroservice.feign.ProductRepository;
 import com.trilogy.calculationmicroservice.feign.TaxRepository;
 import com.trilogy.calculationmicroservice.model.Product;
@@ -53,17 +54,30 @@ public class ServiceLayer {
         productViewToSend.setQuantity(productView.getQuantity());
         productViewToSend.setPricePerUnit(product.getPricePerUnit());
         productViewToSend.setTaxPercent(tax.getTaxPercent());
+        productViewToSend.setCategory(product.getCategory());
         productViewToSend.setTotalTax(calculateTax(productViewToSend));
+
         productViewToSend.setTotal(calculateTotalPrice(productViewToSend,isTaxExempt));
         return productViewToSend;
     }
 
     // to do Integration Testing
     public Product getCategoryFromProductRepository(String productId){
-        return  productRepository.getProductById(productId);
+       Product product = productRepository.getProductById(productId);
+       if(product == null)
+       {
+           throw new NotFoundException("Product category cannot be found for : " + productId);
+       }
+        return  product;
     }
 
-    public Tax getTaxPercentageFromTaxRepository(String Category){
-        return  taxRepository.getTaxesByCategory(Category);
+    public Tax getTaxPercentageFromTaxRepository(String category){
+
+        Tax tax = taxRepository.getTaxesByCategory(category);
+        if(tax == null)
+        {
+            throw new NotFoundException("Tax cannot be found for : " + category);
+        }
+        return  tax;
     }
 }

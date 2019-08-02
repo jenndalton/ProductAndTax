@@ -25,7 +25,7 @@ public class CalculationController {
     }*/
 
 
-    @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/price/product/{productId}", params = { "quantity", "taxExempt" }, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ProductView getTotalPriceAndTax(@PathVariable("productId") String productId,
                                            @RequestParam(value = "quantity", defaultValue = "1") Integer quantity,
