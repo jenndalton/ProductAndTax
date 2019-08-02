@@ -69,6 +69,15 @@ public class ControllerException {
         return responseEntity;
     }
 
+    @ExceptionHandler(value = {IllegalStateException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<VndErrors> illegalStateException(IllegalStateException e, WebRequest request) {
+        VndErrors error = new VndErrors(request.toString(), e.getMessage());
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return responseEntity;
+    }
+
+
     /**
      * Number Format Exception
      *
@@ -77,7 +86,7 @@ public class ControllerException {
      * @return Httpstatus code of 422
      */
     @ExceptionHandler(value = {NumberFormatException.class})
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<VndErrors> numberFormatException(NumberFormatException e, WebRequest request) {
         VndErrors error = new VndErrors(request.toString(), "Parameter must be a whole number. " + e.getMessage());
         ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);

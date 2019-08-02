@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,6 +48,18 @@ public class CalculationControllerTest {
 
 
 
+    @Test
+    public void expectsUnprocessableEntityForNumberFormatException() throws Exception{
+        this.mockMvc.perform(get("/api/price/product/102345?quantity=4e&taxExempt=true")).
+                andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void expectsIllegalStateExceptionWhenQuantityIsLeftOff() throws Exception{
+        this.mockMvc.perform(get("/api/price/product/102345?")).
+                andExpect(status().isUnprocessableEntity());
+    }
+
 
 
 
@@ -61,9 +72,8 @@ public class CalculationControllerTest {
                 andExpect(status().isNotFound());
     }
 
-
     @Test
-    public void getTotalPriceAndTax() throws Exception{
+    public void taxExemptInUri() throws Exception{
         ProductView productView = new ProductView();
         productView.setProductId("1031");
         productView.setQuantity(1);
@@ -94,8 +104,43 @@ public class CalculationControllerTest {
 
 
         this.mockMvc.perform(get("/api/price/product/1031?quantity=1&taxExempt=true"))
-              // .param("quantity","1")
-              // .param("taxExempt","false")
+                // .param("quantity","1")
+                // .param("taxExempt","false")
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json(asJsonString(productViewExpected)))
+                .andExpect(jsonPath("$.description", is("Dove soap")));
+    }
+
+    @Test
+    public void taxExemptNotInUri() throws Exception{
+        ProductView productView = new ProductView();
+        productView.setProductId("1031");
+        productView.setQuantity(1);
+
+        ProductView  productViewExpected = new ProductView();
+        productViewExpected.setDescription("Dove soap");
+        productViewExpected.setProductId("1031");
+        productViewExpected.setQuantity(1);
+        productViewExpected.setPricePerUnit(539.95);
+        productViewExpected.setTaxPercent(8.25);
+        productViewExpected.setTotalTax(44.55);
+        productViewExpected.setTotal(584.50);
+
+        Product product = new Product();
+        product.setProductId("1031");
+        product.setCategory("toiletry");
+        product.setPricePerUnit(3.45);
+        product.setProductDescription("Dove soap");
+
+        Tax tax = new Tax();
+        tax.setCategory("toiletry");
+        tax.setTaxPercent(8.25);
+        tax.setTaxExempt(false);
+
+        when(serviceLayer.getTotalProductPrice(productView,false)).thenReturn(productViewExpected);
+
+        this.mockMvc.perform(get("/api/price/product/1031?quantity=1"))
                  .andExpect(status().isOk())
                  .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                  .andExpect(content().json(asJsonString(productViewExpected)))
