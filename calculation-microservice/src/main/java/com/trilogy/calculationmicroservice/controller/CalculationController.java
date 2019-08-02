@@ -22,6 +22,7 @@ public class CalculationController {
 
 
     @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
+
     @ResponseStatus(HttpStatus.OK)
     public ProductView getTotalPriceAndTax(@PathVariable("productId") String productId,
                                            @RequestParam(value = "quantity", required =false) int quantity,
@@ -38,6 +39,7 @@ public class CalculationController {
         productView.setProductId(productId);
         productView.setQuantity(quantity);
         productView = serviceLayer.getTotalProductPrice(productView, taxExempt);
+
         if(productView == null){
             throw new NotFoundException("Product details could not be retrieved for "+ productId);
         }

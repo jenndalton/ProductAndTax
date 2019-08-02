@@ -20,7 +20,6 @@ import javax.xml.ws.Response;
 
 @SpringBootTest
 public class IntegrationTest {
-   // private MockClient mockClient;
 
     @Mock
     ServiceLayer serviceLayer;
@@ -32,12 +31,12 @@ public class IntegrationTest {
     TaxRepository taxRepository;
 
 
-@Before
-public void setUp(){
-    restTemplate = new RestTemplate();
-}
+    @Before
+    public void setUp(){
+        restTemplate = new RestTemplate();
+    }
 
-RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
 
     @Test
@@ -47,7 +46,6 @@ RestTemplate restTemplate;
         product.setPricePerUnit(3.45);
         product.setCategory("toiletry");
         product.setProductId("1031");
-       // Product productFromClient=   productRepository.getProductById("1031");
         Product productFromClient = restTemplate.getForObject("http://localhost:9000/products"+"/1031",Product.class);
         Assert.assertThat(productFromClient.getCategory(),is("toiletry"));
    }
@@ -58,7 +56,6 @@ RestTemplate restTemplate;
     tax.setTaxPercent(8.25);
     tax.setCategory("toiletry");
     tax.setTaxExempt(false);
-    //Tax taxFromClient = taxRepository.getTaxesByCategory("toiletry");
        Tax taxFromClient = restTemplate.getForObject("http://localhost:9001/taxes"+"/toiletry",Tax.class);
        Assert.assertThat(taxFromClient.getTaxPercent(),is(8.25));
     }

@@ -46,16 +46,23 @@ public class ServiceLayer {
     public ProductView getTotalProductPrice(ProductView productView,boolean isTaxExempt){
         //get the category from productId
         Product product = getCategoryFromProductRepository(productView.getProductId());
+
         //get the tax rate based on category from client
         Tax tax = getTaxPercentageFromTaxRepository(product.getCategory());
-        isTaxExempt = tax.getTaxExempt();
+
+        if(isTaxExempt && tax.getTaxExempt()) {
+            isTaxExempt = true;
+        }
+
         ProductView productViewToSend = new ProductView();
         productViewToSend.setProductId(productView.getProductId());
         productViewToSend.setDescription(product.getProductDescription());
         productViewToSend.setQuantity(productView.getQuantity());
         productViewToSend.setPricePerUnit(product.getPricePerUnit());
+
         productViewToSend.setTaxPercent(tax.getTaxPercent());
         productViewToSend.setCategory(product.getCategory());
+
         productViewToSend.setTotalTax(calculateTax(productViewToSend));
 
         productViewToSend.setTotal(calculateTotalPrice(productViewToSend,isTaxExempt));
