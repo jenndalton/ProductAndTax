@@ -11,14 +11,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceLayer {
+
+    @Autowired
     TaxRepository taxRepository;
 
+    @Autowired
     ProductRepository productRepository;
 
-    public ProductView getTotalProductPriceWithTax(int productId){
+   /* public ProductView getTotalProductPriceWithTax(int productId){
         ProductView productView = new ProductView();
 
-        Product product = productRepository.getProductById(productId);
+       // Product product = productRepository.getProductById(productId);
         Tax tax = taxRepository.getTaxesByCategory(product.getCategory());
 
         return productView;
@@ -27,11 +30,14 @@ public class ServiceLayer {
     public ProductView getTotalProductPriceTaxExempt(ProductView productView){
         return productView;
     }
+*/
+   public ServiceLayer(ProductRepository productRepository, TaxRepository taxRepository){
+       this.productRepository = productRepository;
+       this.taxRepository = taxRepository;
+   }
 
 
-    boolean taxExempt;
-
-    public Double calculateTotalPrice(ProductView productView){
+    public Double calculateTotalPrice(ProductView productView, boolean taxExempt){
         Double totalPrice = 0.00;
         if (!taxExempt){
             totalPrice = productView.getTotalTax() + (productView.getPricePerUnit() * productView.getQuantity());
@@ -45,17 +51,32 @@ public class ServiceLayer {
 
     public Double calculateTax(ProductView productView){
         Double totalTax = ((productView.getTaxPercent() / 100) * (productView.getPricePerUnit() * productView.getQuantity()));
-//        Long price = (long) (double) Math.round(totalTax);
         Double d = (double)Math.round(totalTax);;
         return d;
     }
 
-    public ProductView getTotalProductPrice(ProductView productView){
+    public ProductView getTotalProductPrice(ProductView productView,boolean isTaxExempt){
         //get the category from productId
-
+        Product product = getCategoryFromProductRepository(productView.getProductId());
         //get the tax rate based on category from client
+        Tax tax = getTaxPercentageFromTaxRepository(product.getCategory());
+        isTaxExempt = tax.getTaxExempt();
+        ProductView productViewToSend = new ProductView();
+        productViewToSend.setProductId(productView.getProductId());
+        productViewToSend.setDescription(product.getProductDescription());
+        productViewToSend.setQuantity(productView.getQuantity());
+        productViewToSend.setTaxPercent(tax.getTaxPercent());
+        productViewToSend.setTotalTax(calculateTax(productView));
+        productViewToSend.setTotal(calculateTotalPrice(productView,isTaxExempt));
+        return productViewToSend;
+    }
 
+    // to do Integration Testing
+    public Product getCategoryFromProductRepository(String productId){
+        return  productRepository.getProductById(productId);
+    }
 
-        return null;
+    public Tax getTaxPercentageFromTaxRepository(String Category){
+        return  taxRepository.getTaxesByCategory(Category);
     }
 }

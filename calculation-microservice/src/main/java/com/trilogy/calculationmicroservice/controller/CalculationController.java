@@ -31,12 +31,13 @@ public class CalculationController {
 
     @RequestMapping(value = "/api/price/product/{productId}", method = RequestMethod.GET)
     public void queryForTotalPriceAndTax(@PathVariable int productId) {
-        serviceLayer.getTotalProductPriceWithTax(productId);
+        //serviceLayer.(productId);
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public Product queryForProduct(@PathVariable int id) {
-        return productRepository.getProductById(id);
+       // return productRepository.getProductById(id);
+        return null;
     }
 
 
